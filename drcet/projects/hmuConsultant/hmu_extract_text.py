@@ -15,15 +15,19 @@ pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tessera
 
 def extract_text(path):
     img, bboxes = line_segment(path, kernel = (1,80), scale = (2,2))    
-    lines = []
+    full_text = ''
     for bbox in bboxes:
         x,y,w,h  = bbox
-        if h > 10 and w > 100:
+        if h > 16 and w > 32:
+            # cv2.rectangle(img, (x-4,y-4), (x+w+4, y+h+4), (127,0,0), 2)
             cropped = img[y-4:y+h+4, x-4:x+w+4]
             text = pytesseract.image_to_string(cropped, config='--psm 6', lang ='hmu')
-            # plt.imshow(cropped)
-            # plt.xlabel(text)
-            # plt.show()
-            print(text)
+            full_text += text
+    return img, full_text
 path = 'page373.jpg'
-extract_text(path)
+img, full_text = extract_text(path)
+print(full_text)
+# plot bounding boxes
+# plt.imshow(img)
+# plt.axis('off')
+# plt.show()
