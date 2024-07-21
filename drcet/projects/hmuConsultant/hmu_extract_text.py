@@ -18,7 +18,7 @@ def extract_text(path):
     full_text = ''
     for bbox in bboxes:
         x,y,w,h  = bbox
-        if h > 16 and w > 32:
+        if h > 16 and w > 32 and w > h:
             # cv2.rectangle(img, (x-4,y-4), (x+w+4, y+h+4), (127,0,0), 2)
             cropped = img[y-4:y+h+4, x-4:x+w+4]
             text = pytesseract.image_to_string(cropped, config='--psm 6', lang ='hmu')
